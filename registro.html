@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Correos</title>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1157/1157034.png" type="image/png">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      color: white;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      background: #fff;
+      color: #333;
+      width: 100%;
+      max-width: 600px;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #333;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    input[type="email"] {
+      padding: 15px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      transition: border-color 0.3s ease;
+    }
+    input[type="email"]:focus {
+      border-color: #007BFF;
+      outline: none;
+    }
+    button {
+      padding: 15px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .success-message {
+      color: green;
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+      display: none;
+    }
+    .thank-you {
+      margin-top: 10px;
+      font-size: 18px;
+      color: #007BFF;
+      text-align: center;
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+      h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Registro</h1>
+    <form id="emailForm">
+      <label for="email" style="font-weight: bold;">Correo electrónico:</label>
+      <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" required>
+      <button type="submit">Enviar</button>
+    </form>
+    <p class="success-message" id="successMessage">¡Gracias! Tu correo fue registrado exitosamente.</p>
+    <p class="thank-you" id="thankYouMessage"> Espero te haya gustado la charla 😊</p>
+  </div>
+
+  <script>
+    // Inicializar EmailJS
+    emailjs.init("RDb7cs8SWsvGkzF2i");
+
+    document.getElementById("emailForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      // Obtener el email ingresado
+      const emailInput = document.getElementById("email").value;
+
+      // Configurar los parámetros del correo
+      const emailParams = {
+        user_email: emailInput,
+      };
+
+      // Enviar el correo usando EmailJS
+      emailjs.send("service_flhs2y6", "template_0jgvdo6", emailParams)
+        .then((response) => {
+          console.log("Correo enviado:", response.status, response.text);
+
+          // Mostrar mensajes de éxito y agradecimiento
+          const successMessage = document.getElementById("successMessage");
+          const thankYouMessage = document.getElementById("thankYouMessage");
+          successMessage.style.display = "block";
+          thankYouMessage.style.display = "block";
+
+          // Limpiar el formulario
+          e.target.reset();
+        })
+        .catch((error) => {
+          console.error("Error al enviar el correo:", error);
+        });
+    });
+  </script>
+</body>
+</html>
